@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}{{ 'Edit application' if job else 'Add application' }}{% endblock %}
+{% block content %}
+<section class="form-page">
+  <a class="back-link" href="{{ url_for('dashboard') }}">← Back to dashboard</a>
+  <div class="form-page-heading"><span class="eyebrow">KEEP YOUR MOMENTUM</span><h1>{{ 'Edit application' if job else 'Add an opportunity' }}</h1><p class="muted">A few details now make follow-ups easier later.</p></div>
+  <form class="form-card wide-form" method="post">
+    <div class="form-grid">
+      <div class="field"><label for="company">Company name *</label><input id="company" name="company" required value="{{ job.company if job else '' }}" placeholder="e.g. Acme Technologies"></div>
+      <div class="field"><label for="role">Job title *</label><input id="role" name="role" required value="{{ job.role if job else '' }}" placeholder="e.g. Junior Python Developer"></div>
+      <div class="field"><label for="location">Location / work mode</label><input id="location" name="location" value="{{ job.location if job else '' }}" placeholder="e.g. Hyderabad / Remote"></div>
+      <div class="field"><label for="applied_date">Date applied *</label><input id="applied_date" name="applied_date" type="date" required value="{{ job.applied_date if job else today }}"></div>
+      <div class="field"><label for="status">Current status</label><select id="status" name="status">{% for option in ['Applied', 'Interview', 'Selected', 'Rejected'] %}<option value="{{ option }}" {% if job and job.status == option %}selected{% endif %}>{{ option }}</option>{% endfor %}</select></div>
+      <div class="field"><label for="job_url">Job posting URL</label><input id="job_url" name="job_url" type="url" value="{{ job.job_url if job else '' }}" placeholder="https://..."></div>
+      <div class="field field-full"><label for="notes">Notes / next step</label><textarea id="notes" name="notes" rows="4" placeholder="Recruiter name, follow-up date, interview topics...">{{ job.notes if job else '' }}</textarea></div>
+    </div>
+    <div class="form-actions"><a class="button button-ghost" href="{{ url_for('dashboard') }}">Cancel</a><button class="button" type="submit">{{ 'Save changes' if job else 'Save application' }} →</button></div>
+  </form>
+</section>
+{% endblock %}

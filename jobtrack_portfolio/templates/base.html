@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="JobTrack helps you organize job applications and interview progress.">
+  <title>{% block title %}JobTrack{% endblock %} | JobTrack</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="{{ url_for('index') }}"><span class="brand-mark">J</span> JobTrack</a>
+    <nav>
+      {% if session.get('user_id') %}
+        <span class="nav-greeting">Hi, {{ session.get('user_name', 'there') }}</span>
+        <a class="nav-link" href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a class="button button-small button-ghost" href="{{ url_for('logout') }}">Sign out</a>
+      {% else %}
+        <a class="nav-link" href="{{ url_for('login') }}">Sign in</a>
+        <a class="button button-small" href="{{ url_for('register') }}">Get started</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main class="page-shell">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="flash-stack">
+          {% for category, message in messages %}
+            <div class="flash flash-{{ category }}">{{ message }}</div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <span>© 2026 JobTrack</span>
+    <span>Built with Python · Flask · SQLite</span>
+  </footer>
+</body>
+</html>
